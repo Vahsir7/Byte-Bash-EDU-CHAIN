@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDU-CHAIN Frontend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Optional: Add some custom styles if needed */
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8">EDU-CHAIN Frontend</h1>
+
+        <div class="section p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Issue Certificate</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="issuerId" class="block text-sm font-medium text-gray-700">Issuer ID:</label>
+                    <input type="text" id="issuerId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2">
+                </div>
+                <div>
+                    <label for="recipientAddress" class="block text-sm font-medium text-gray-700">Recipient Address:</label>
+                    <input type="text" id="recipientAddress" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2">
+                </div>
+                <div>
+                    <label for="courseName" class="block text-sm font-medium text-gray-700">Course Name:</label>
+                    <input type="text" id="courseName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2">
+                </div>
+                <div>
+                    <label for="issueDate" class="block text-sm font-medium text-gray-700">Issue Date:</label>
+                    <input type="date" id="issueDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2">
+                </div>
+            </div>
+            <button id="issueBtn" class="mt-6 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 btn">Issue Certificate</button>
+        </div>
+
+        <div class="section p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">View Student Certificates</h2>
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-grow">
+                    <label for="studentAddress" class="block text-sm font-medium text-gray-700">Student Address:</label>
+                    <input type="text" id="studentAddress" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2">
+                </div>
+                <div class="flex items-end">
+                    <button id="viewCertificatesBtn" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 btn">View Certificates</button>
+                </div>
+            </div>
+            <div id="studentCertificatesResult" class="mt-4 p-4 bg-gray-100 rounded-md hidden">
+                <h3 class="text-lg font-medium mb-2">Certificates:</h3>
+                <pre class="whitespace-pre-wrap break-words text-sm"></pre>
+            </div>
+        </div>
+
+        <div class="section p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Verify Certificate</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="verifyCertificateId" class="block text-sm font-medium text-gray-700">Certificate ID:</label>
+                    <input type="text" id="verifyCertificateId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2">
+                </div>
+                <div>
+                    <label for="verifyRecipientAddress" class="block text-sm font-medium text-gray-700">Recipient Address:</label>
+                    <input type="text" id="verifyRecipientAddress" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2">
+                </div>
+            </div>
+            <button id="verifyBtn" class="mt-6 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 btn">Verify Certificate</button>
+            <div id="verifyResult" class="mt-4 p-4 bg-gray-100 rounded-md hidden">
+                 <h3 class="text-lg font-medium mb-2">Verification Result:</h3>
+                <pre class="whitespace-pre-wrap break-words text-sm"></pre>
+            </div>
+        </div>
+
+         <div class="section p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Blockchain Actions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button id="mineBtn" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 btn">Mine Block</button>
+                <button id="viewChainBtn" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 btn">View Full Chain</button>
+            </div>
+             <div id="blockchainActionResult" class="mt-4 p-4 bg-gray-100 rounded-md hidden">
+                 <h3 class="text-lg font-medium mb-2">Result:</h3>
+                <pre class="whitespace-pre-wrap break-words text-sm"></pre>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Base URL for your Flask API
+        const API_BASE_URL = 'http://127.0.0.1:5000'; // Make sure this matches your Flask server address
+
+        // Helper function to display results in a designated div
+        function displayResult(elementId, data) {
+            const resultDiv = document.getElementById(elementId);
+            const preElement = resultDiv.querySelector('pre');
+            preElement.textContent = JSON.stringify(data, null, 2); // Pretty print JSON
+            resultDiv.classList.remove('hidden'); // Show the result div
+        }
+
+        // Helper function to display errors
+        function displayError(elementId, error) {
+             const resultDiv = document.getElementById(elementId);
+             const preElement = resultDiv.querySelector('pre');
+             preElement.textContent = `Error: ${error.message || error}`;
+             resultDiv.classList.remove('hidden');
+             resultDiv.classList.add('bg-red-200'); // Indicate error with red background
+        }
+
+        // --- API Call Functions ---
+
+        async function issueCertificate() {
+            const issuerId = document.getElementById('issuerId').value;
+            const recipientAddress = document.getElementById('recipientAddress').value;
+            const courseName = document.getElementById('courseName').value;
+            const issueDate = document.getElementById('issueDate').value;
+
+            const data = {
+                issuer_id: issuerId,
+                recipient_address: recipientAddress,
+                course_name: courseName,
+                issue_date: issueDate
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/issue`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                 if (!response.ok) {
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
+                displayResult('blockchainActionResult', result); // Use blockchain action result area
+            } catch (error) {
+                console.error('Error issuing certificate:', error);
+                displayError('blockchainActionResult', error); // Use blockchain action result area
+            }
+        }
+
+        async function viewStudentCertificates() {
+            const studentAddress = document.getElementById('studentAddress').value;
+            if (!studentAddress) {
+                alert('Please enter a student address.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/certificates/${studentAddress}`);
+                 const result = await response.json();
+                 if (!response.ok) {
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
+                displayResult('studentCertificatesResult', result);
+            } catch (error) {
+                console.error('Error fetching student certificates:', error);
+                 displayError('studentCertificatesResult', error);
+            }
+        }
+
+        async function verifyCertificate() {
+            const certificateId = document.getElementById('verifyCertificateId').value;
+            const recipientAddress = document.getElementById('verifyRecipientAddress').value;
+
+            if (!certificateId || !recipientAddress) {
+                alert('Please enter both Certificate ID and Recipient Address.');
+                return;
+            }
+
+            const data = {
+                certificate_id: certificateId,
+                recipient_address: recipientAddress
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/verify`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                 if (!response.ok) {
+                     // Handle specific API error messages
+                     const errorMessage = result.message || `HTTP error! status: ${response.status}`;
+                     throw new Error(errorMessage);
+                 }
+                displayResult('verifyResult', result);
+            } catch (error) {
+                console.error('Error verifying certificate:', error);
+                 displayError('verifyResult', error);
+            }
+        }
+
+        async function mineBlock() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/mine`);
+                 const result = await response.json();
+                 if (!response.ok) {
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
+                displayResult('blockchainActionResult', result); // Use blockchain action result area
+            } catch (error) {
+                console.error('Error mining block:', error);
+                 displayError('blockchainActionResult', error); // Use blockchain action result area
+            }
+        }
+
+        async function viewFullChain() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/chain`);
+                 const result = await response.json();
+                 if (!response.ok) {
+                    throw new Error(result.error || `HTTP error! status: ${response.status}`);
+                }
+                displayResult('blockchainActionResult', result); // Use blockchain action result area
+            } catch (error) {
+                console.error('Error fetching full chain:', error);
+                 displayError('blockchainActionResult', error); // Use blockchain action result area
+            }
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('issueBtn').addEventListener('click', issueCertificate);
+        document.getElementById('viewCertificatesBtn').addEventListener('click', viewStudentCertificates);
+        document.getElementById('verifyBtn').addEventListener('click', verifyCertificate);
+        document.getElementById('mineBtn').addEventListener('click', mineBlock);
+        document.getElementById('viewChainBtn').addEventListener('click', viewFullChain);
+
+    </script>
+</body>
+</html>
